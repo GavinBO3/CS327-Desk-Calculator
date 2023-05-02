@@ -10,7 +10,7 @@ import java.util.Scanner;
  * If no variable is explicitly assigned, then the default variable "it" is assigned
  * the value of the most recently evaluated expression.
  *
- * @author YOU NAME HERE
+ * @author Gavin Boland
  */
 public class Evaluator {
 
@@ -141,10 +141,60 @@ public class Evaluator {
        * Return the next token from the terminal.
        */
       public int nextToken() {
-
-         // YOUR CODE GOES HERE
-
-         return BAD_TOKEN;
+          text = "" + nextChar();
+          while(text == " ") // This loop effectively skips past any whitespace chars
+          {
+              text = "" + nextChar();
+          }
+          switch(text)
+          {
+              case '+':
+                  return ADD_OP;
+                  break;
+              
+              case '-':
+                  return SUBTRACT_OP;
+                  break;
+                  
+              case '*':
+                  return MULTIPLY_OP;
+                  break;
+                 
+              case '/':
+                  return DIVIDE_OP;
+                  break;
+              
+              case '~':
+                  return MINUS_OP;
+                  break;
+                  
+              case '=':
+                  return ASSIGN_OP;
+                  break;
+                  
+              case '\n':
+                  return EOL;
+                  break;
+          }
+          
+          if (text.charAt(0) >= '0' && text.charAt(0) <= '9')
+          {
+              char nxt = nextChar();
+              bool decimalUsed = false; // There can only be one decimal point
+              // Iterates through the whole number
+              while((nxt >= '0' && text.charAt(0) <= '9') || (nxt == '.' && !decimalUsed))
+              {
+                  text += nxt;
+                  if (nxt == '.')
+                  {
+                      decimalUsed = true;
+                  }
+                  nxt = nextChar();
+              }
+              return NUMBER;
+          }
+          // TODO: implement letters/variables and "other"
+          return BAD_TOKEN;
 
       } // nextToken
 
